@@ -35,10 +35,25 @@ export default function Register() {
                                     tabIndex={1}
                                     autoComplete="name"
                                     name="name"
-                                    placeholder="Full name"
+                                    placeholder="Name"
                                 />
                                 <InputError
                                     message={errors.name}
+                                    className="mt-2"
+                                />
+                                <Label htmlFor="last_name">Last Name</Label>
+                                <Input
+                                    id="last_name"
+                                    type="text"
+                                    required
+                                    autoFocus
+                                    tabIndex={1}
+                                    autoComplete="last_name"
+                                    name="last_name"
+                                    placeholder="Last name"
+                                />
+                                <InputError
+                                    message={errors.last_name}
                                     className="mt-2"
                                 />
                             </div>
@@ -55,6 +70,35 @@ export default function Register() {
                                     placeholder="email@example.com"
                                 />
                                 <InputError message={errors.email} />
+                            </div>
+
+                            <div className='flex gap-2 '>
+                                <div className='flex flex-col gap-2 w-1/3'>
+                                    <Label htmlFor="country_code">Country Code</Label>
+                                    <Input
+                                        id="country_code"
+                                        type="text"
+                                        tabIndex={2}
+                                        autoComplete="country_code"
+                                        name="country_code"
+                                        placeholder="Country Code"
+                                    />
+                                    <InputError message={errors.country_code} />
+
+                                </div>
+                                <div className='flex flex-col gap-2'>
+                                    <Label htmlFor="phone">Phone</Label>
+                                    <Input
+                                        id="phone"
+                                        type="text"
+                                        tabIndex={2}
+                                        autoComplete="phone"
+                                        name="phone"
+                                        placeholder="Phone"
+                                    />
+                                    <InputError message={errors.phone} />
+
+                                </div>
                             </div>
 
                             <div className="grid gap-2">
