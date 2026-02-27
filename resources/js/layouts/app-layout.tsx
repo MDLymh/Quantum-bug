@@ -1,17 +1,18 @@
+import { index } from '@/actions/Laravel/Fortify/Http/Controllers/RecoveryCodeController';
 import Navbar from '@/components/custom/NavBar';
 import AppLayoutTemplate from '@/layouts/app/app-nav-bar-layout';
-import { login, logout, register } from '@/routes';
+import { blogs, faq, home, login, logout, products, register, support } from '@/routes';
 import type { AppLayoutProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 
 export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
         const { auth } = usePage().props;
         const links = [
-            { name: 'Home', link: '/' },
-            { name: 'Products', link: '/products' },
-            { name: 'support', link: '/support' },
-            { name: 'FAQ', link: '/faq' },
-            { name: 'Blogs', link: '/blogs' }
+            { name: 'Home', link: home.url() },
+            { name: 'Products', link: products.url() },
+            { name: 'support', link: support.url() },
+            //{ name: 'FAQ', link: faq.url() },
+            { name: 'Blogs', link: blogs.url() }
         ];
         const authLinks = [
             { name: "Login", link: login.url() },
