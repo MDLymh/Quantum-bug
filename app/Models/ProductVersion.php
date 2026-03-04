@@ -9,6 +9,12 @@ class ProductVersion extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductVersionFactory> */
     use HasFactory;
+
+    public $hidden = [
+        'product_id',
+        'updated_at'
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);
