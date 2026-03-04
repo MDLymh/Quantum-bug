@@ -1,5 +1,6 @@
 import Navbar from '@/components/custom/NavBar';
 import MainContainer from '@/components/custom/MainContainer';
+import Footer from '@/components/custom/Footer'; // <-- Importamos el nuevo Footer
 import AppLayoutTemplate from '@/layouts/app/app-nav-bar-layout';
 import { blogs, faq, home, login, logout, register} from '@/routes';
 import products from '@/routes/products';
@@ -11,22 +12,23 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
     const { auth } = usePage().props;
 
     const links = [
-        { name: 'Inicio', link: home.url() },
-        { name: 'Productos', link: products.url() },
-        { name: 'Soporte', link: support.url() },
+        { name: 'Home', link: home.url() },
+        { name: 'Products', link: products.index.url() },
+        { name: 'Support', link: support.index.url() },
         { name: 'Blogs', link: blogs.url() },
         { name: 'FAQ', link: faq.url() }
     ];
 
     const authLinks = [
-        { name: "Iniciar Sesión", link: login.url() },
-        { name: "Registrarse", link: register.url() }
+        { name: "Login", link: login.url() },
+        { name: "Register", link: register.url() }
     ];
 
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
-            <div className="flex flex-col min-h-screen">
-                {/* Navbar superior */}
+            {/* El contenedor principal con flex y min-h-screen empuja el footer hacia abajo */}
+            <div className="flex flex-col min-h-screen bg-qb-dark">
+                
                 <header className="sticky top-0 z-50 bg-qb-dark/90 backdrop-blur-sm">
                     <Navbar 
                         links={links} 
@@ -37,29 +39,14 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
                     />
                 </header>
 
-                {/* Contenido principal con efectos de marca */}
-                <main className="grow bg-qb-dark">
+                <main className="grow flex flex-col bg-qb-dark">
                     <MainContainer>
                         {children}
                     </MainContainer>
                 </main>
 
-                {/* Footer estilo Quantum Bug */}
-                <footer className="bg-qb-cyan py-8 flex flex-col items-center gap-4">
-                    <div className="flex gap-6 text-qb-dark font-bold uppercase tracking-widest text-sm">
-                        <a href="#" className="hover:opacity-70 transition">Inicio</a>
-                        <a href="#" className="hover:opacity-70 transition">Productos</a>
-                        <a href="#" className="hover:opacity-70 transition">Soporte</a>
-                        <a href="#" className="hover:opacity-70 transition">FAQ</a>
-                        <a href="#" className="hover:opacity-70 transition">Blogs</a>
-                    </div>
-                    
-                    <div className="border-t border-qb-dark/20 w-full max-w-4xl my-2"></div>
-                    
-                    <p className="text-qb-dark/80 text-xs font-medium">
-                        © 2026 Copyright: BigQuantumStudios.com
-                    </p>
-                </footer>
+                <Footer />
+                
             </div>
         </AppLayoutTemplate>
     );
