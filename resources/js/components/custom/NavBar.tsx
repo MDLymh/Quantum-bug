@@ -1,147 +1,120 @@
 import React, { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { CircleUserRound, LogOut } from 'lucide-react';
-
+import { LogOut, User, Menu, X, Search } from 'lucide-react';
 
 interface NavLink {
-  name: string;
-  link: string;
+    name: string;
+    link: string;
 }
 
-interface User {
-  name: string;
-  email?: string;
+interface UserData {
+    name: string;
 }
 
 interface NavbarProps {
-  links: NavLink[];          // Links de navegación (Dashboard, etc.)
-  authLinks: NavLink[];      // Links para invitados (Login, Register)
-  logoutRoute: string;       // Nombre de la ruta o URL de logout (ej: '/logout')
-  user: User | null;         // auth.user desde Laravel
-  logoName?: string;
+    links: NavLink[];
+    authLinks: NavLink[];
+    logoutRoute: string;
+    user: UserData | null;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ 
-  links, 
-  authLinks, 
-  logoutRoute, 
-  user, 
-  logoName = "QuantumBug" 
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogout = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.post(logoutRoute);
-  };
+    const handleLogout = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.post(logoutRoute);
+    };
 
-  return (
-    <nav className="border-b border-indigo-600 w-full shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          
-          {/* Logo e Inertia Links Principales */}
-          <div className="flex items-center space-x-10 h-full">
-            <Link href="/" className="text-xl font-bold text-indigo-600">
-              {logoName}
-            </Link>
-            
-            <div className="hidden md:flex space-x-6 h-full items-center">
-              {links.map((item, idx) => (
-                <Link 
-                  key={idx} 
-                  href={item.link} 
-                  className="text-sm font-medium dark:text-white  hover:text-indigo-600 h-full items-center flex transition capitalize"
-                >
-                  {item.name}
-                </Link>
-              ))}
+    return (
+        <nav className="sticky top-0 z-[100] w-full bg-qb-blue h-14 flex items-center shadow-lg border-b border-white/10">
+            <div className="w-full px-4 flex justify-between items-center h-full">
+                
+                {/* Logo e Items de Navegación */}
+                <div className="flex items-center h-full">
+                    {/* Reemplaza este div con tu SVG real */}
+                    <Link href="/" className="mr-6 hover:scale-105 transition-transform">
+                        <div className="w-8 h-8 bg-qb-dark rounded-full flex items-center justify-center">
+                             <span className="text-[10px] text-qb-cyan font-bold">QB</span>
+                        </div>
+                    </Link>
+
+                    {/* Links con divisores verticales (Estilo Minimalista) */}
+                    <div className="hidden md:flex items-center h-full">
+                        {links.map((item, idx) => (
+                            <div key={idx} className="flex items-center h-full">
+                                <Link 
+                                    href={item.link} 
+                                    className="px-4 text-[11px] font-black uppercase tracking-widest text-qb-dark hover:text-white transition-colors"
+                                >
+                                    {item.name}
+                                </Link>
+                                {/* Divisor Vertical */}
+                                {idx < links.length && (
+                                    <div className="h-6 w-[1px] bg-white/40"></div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Buscador y Auth */}
+                <div className="flex items-center gap-4 h-full">
+                    {/* Barra de búsqueda minimalista (como en tu imagen) */}
+                    <div className="hidden sm:flex items-center bg-qb-dark/20 rounded px-3 py-1 border border-white/10">
+                        <input 
+                            type="text" 
+                            className="bg-transparent border-none focus:ring-0 text-xs text-qb-dark placeholder-qb-dark/50 w-32"
+                            placeholder="Buscar..."
+                        />
+                        <Search size={14} className="text-qb-dark" />
+                    </div>
+
+                    {/* Usuario / Login */}
+                    <div className="flex items-center h-full">
+                        {user ? (
+                            <div className="flex items-center gap-3 bg-qb-dark/10 px-3 py-1 rounded-full border border-white/20">
+                                <span className="text-[10px] font-bold text-qb-dark uppercase">{user.name}</span>
+                                <button onClick={handleLogout} className="text-qb-dark hover:text-red-600 transition">
+                                    <LogOut size={16} />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                {authLinks.map((item, idx) => (
+                                    <Link 
+                                        key={idx} 
+                                        href={item.link}
+                                        className={`text-[11px] font-black uppercase tracking-tighter px-3 py-1 rounded transition ${
+                                            idx === 1 ? 'bg-qb-dark text-qb-cyan' : 'text-qb-dark hover:bg-white/20'
+                                        }`}
+                                    >
+                                        {item.name}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Botón Mobile */}
+                    <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-qb-dark">
+                        {isOpen ? <X /> : <Menu />}
+                    </button>
+                </div>
             </div>
-          </div>
 
-          
-          <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <div className="flex items-center space-x-6">
-                <span className="text-sm dark:text-white">Hola, {user.name}</span>
-                
-                
-                <button 
-                  onClick={handleLogout}
-                  className="text-sm font-semibold text-red-500 hover:text-red-700 transition cursor-pointer"
-                >
-                  <LogOut />
-                </button>
-                <Link href="settings/profile" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition">
-                  <CircleUserRound />
-                </Link>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                {authLinks.map((item, idx) => (
-                  <Link 
-                    key={idx} 
-                    href={item.link} 
-                    className={`px-4 py-2 text-sm font-medium rounded-md transition ${
-                      idx === authLinks.length - 1 
-                      ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm' 
-                      : 'dark:text-white hover:bg-gray-50 hover:text-black'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
+            {/* Menú Mobile Desplegable */}
+            {isOpen && (
+                <div className="absolute top-14 left-0 w-full bg-qb-blue border-b border-qb-dark/20 md:hidden flex flex-col p-4 animate-in fade-in slide-in-from-top-2">
+                    {links.map((item, idx) => (
+                        <Link key={idx} href={item.link} className="py-2 text-xs font-bold uppercase text-qb-dark border-b border-qb-dark/5">
+                            {item.name}
+                        </Link>
+                    ))}
+                </div>
             )}
-          </div>
-
-          
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-500 p-2">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isOpen 
-                  ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                }
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      
-      {isOpen && (
-        <div className="md:hidden border-t border-indigo-600 py-4 px-4 space-y-2">
-          {links.map((item, idx) => (
-            <Link key={idx} href={item.link} className="block text-gray-700 py-2 font-medium">
-              {item.name}
-            </Link>
-          ))}
-          <div className="pt-4 border-t border-indigo-600">
-            {user ? (
-              <>
-                <button 
-                  onClick={handleLogout} 
-                  className="w-full text-left text-red-500 font-bold py-2 cursor-pointer"
-                >
-                  Cerrar Sesión
-                </button>
-                <Link href="settings/profile" className="block text-gray-700 py-2 font-medium">
-                  Perfil
-                </Link>
-              </>
-            ) : (
-              authLinks.map((item, idx) => (
-                <Link key={idx} href={item.link} className="block text-gray-700 py-2 font-medium">
-                  {item.name}
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-      )}
-    </nav>
-  );
+        </nav>
+    );
 };
 
 export default Navbar;
