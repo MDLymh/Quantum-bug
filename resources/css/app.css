@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Paleta de colores */
   --color-qb-blue: #35AAF9;
   --color-qb-dark: #04004D;
   --color-qb-gray: #35353A;
   --color-qb-purple: #D130F2;
   --color-qb-cyan: #2FF4EE;
 
-  /* NUEVOS KEYFRAMES: 
-    De 0% a 90% no hace nada (se queda quieto).
-    De 92% a 98% hace el movimiento rápido del glitch.
-  */
+  /* Sombra de Glitch centralizada */
+  --glitch-shadow: 2px 0px 0px #2FF4EE, -2px 0px 0px #D130F2;
+
   @keyframes glitch {
     0%, 90%, 100% { transform: translate(0); }
     92% { transform: translate(-2px, 2px); }
@@ -20,19 +20,49 @@
     98% { transform: translate(2px, -2px); }
   }
 
-  /* DURACIÓN Y RETRASO (DELAY):
-    - 4s y 6s es lo que dura el ciclo completo (como el 90% es pausa, pausará ~3.5 segundos entre cada glitch).
-    - 'infinite' hace que se repita siempre.
-    - El '3s' al final es el tiempo que espera la página al cargar antes de empezar la animación por primera vez.
-  */
   --animate-glitch-fast: glitch 4s infinite 3s;
   --animate-glitch-slow: glitch 6s infinite 3s;
 }
 
 @layer base {
-  body {
-    background-color: var(--color-qb-dark);
+  html, body {
+    @apply transition-colors duration-500 ease-in-out min-h-screen antialiased;
+  }
+
+  /* El modo Dark es tu modo Quantum por defecto ahora */
+  html.dark body {
+    background-color: var(--color-qb-dark) !important;
     color: white;
-    -webkit-font-smoothing: antialiased;
+  }
+
+  html:not(.dark) body {
+    background-color: #ffffff !important;
+    color: #111827;
+  }
+
+  /* --- LOGICA GLOBAL DE EFECTOS --- */
+  
+  /* 1. Si NO hay .no-effects, aplicamos el shadow a los titulos que lo requieran */
+  .glitch-title {
+    text-shadow: var(--glitch-shadow);
+    transition: text-shadow 0.3s ease;
+  }
+
+  /* 2. Si existe .no-effects, apagamos TODO */
+  html.no-effects {
+    --glitch-shadow: none;
+  }
+
+  html.no-effects *, 
+  html.no-effects *:before, 
+  html.no-effects *:after {
+    animation: none !important;
+    text-shadow: none !important;
+    transition-duration: 0s !important; /* Apaga transiciones lentas si es necesario */
+  }
+
+  /* Ocultar elementos decorativos */
+  html.no-effects .glitch-decor {
+    display: none !important;
   }
 }

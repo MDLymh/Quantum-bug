@@ -37,7 +37,7 @@ function Faq() {
         {/* --- Header Section (Anaglyph Glitch Effect) --- */}
         <div className="text-center mb-16">
           <h1 
-            className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest relative inline-block"
+            className="text-4xl md:text-6xl font-black text-black dark:text-white uppercase tracking-widest relative inline-block"
             // The textShadow trick creates the cyan/magenta separation seen in your title reference.
             style={{ textShadow: '3px 0px 0px #2FF4EE, -3px 0px 0px #D130F2' }}
           >
@@ -59,29 +59,20 @@ function Faq() {
             >
               <AccordionTrigger 
                 // [&>svg]:hidden is crucial to hide the default shadcn chevron arrow
-                className="text-left text-lg md:text-xl font-bold text-gray-200 hover:text-white hover:no-underline py-6 [&>svg]:hidden group"
+                className="text-left text-lg md:text-xl font-bold dark:text-gray-300 text-gray-800 hover:text-gray-600 dark:hover:text-white hover:no-underline py-6 [&>svg]:hidden group"
               >
-                {/* 1. Question Text on the left
-                  flex-grow pushes the icon to the far right.
-                */}
                 <span className="flex-grow">{item.question}</span>
-                
-                {/* 2. CUSTOM ANIMATING "+" ICON (This is the key part!)
-                  We use flex to align it, set a duration, and add transition-transform.
-                  The key to rotation is "group-data-[state=open]:rotate-45", 
-                  which makes it a "x" when open. 
-                */}
                 <div className="flex items-center justify-center p-2 rounded-full h-10 w-10 bg-qb-dark/50 border border-white/10">
                   <Plus 
                     className={cn(
-                      "h-6 w-6 text-gray-400 shrink-0 transition-all duration-500", // Smooth 500ms spinning animation
-                      "group-data-[state=open]:rotate-45 group-data-[state=open]:text-qb-cyan" // Spin to "x" and change to cyan color
+                      "h-6 w-6 text-gray-400 shrink-0 transition-all duration-500",
+                      "group-data-[state=open]:rotate-45 group-data-[state=open]:text-qb-cyan"
                     )} 
                   />
                 </div>
               </AccordionTrigger>
               
-              <AccordionContent className="text-gray-400 text-base md:text-lg pb-8 leading-relaxed font-medium">
+              <AccordionContent className="dark:text-gray-400 text-gray-800 text-base md:text-lg pb-8 leading-relaxed font-medium">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>
@@ -89,12 +80,12 @@ function Faq() {
         </Accordion>
 
         {/* --- Help Section at Bottom (Translated) --- */}
-        <div className="mt-20 pt-10 border-t border-white/5 text-center">
+        <div className="mt-20 pt-10 border-t border-white/5 dark:border-white/10 text-center">
             <p className="text-qb-blue font-black uppercase tracking-widest text-xs mb-2">Still need help?</p>
-            <p className="text-gray-500 text-sm mb-6 italic">If you can't find your answer here, feel free to contact our technical support team.</p>
+            <p className="dark:text-gray-500 text-gray-800 text-sm mb-6 italic">If you can't find your answer here, feel free to contact our technical support team.</p>
             <a 
               href="/support" 
-              className="inline-block bg-white text-qb-gray px-12 py-3 rounded-full font-black uppercase tracking-widest text-sm hover:bg-qb-cyan transition-all duration-300 shadow-md hover:shadow-[0_0_15px_rgba(47,244,238,0.3)] group"
+              className="inline-block bg-white dark:bg-black text-qb-gray dark:text-qb-blue px-12 py-3 rounded-full font-black uppercase tracking-widest text-sm hover:bg-qb-cyan transition-all duration-300 shadow-md hover:shadow-[0_0_15px_rgba(47,244,238,0.3)] group"
             >
                Contact Support <span className="text-qb-blue group-hover:translate-x-1 inline-block transition-transform">-&gt;</span>
             </a>

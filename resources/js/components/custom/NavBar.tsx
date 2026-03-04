@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Menu, X, Search } from 'lucide-react';
+import { LogOut, Menu, X, Settings, Sun, Moon, Monitor, Zap, ZapOff } from 'lucide-react';
+import { useAppearance, Appearance } from '@/hooks/use-appearance';
+import { cn } from '@/lib/utils';
 
 interface NavLink {
     name: string;
@@ -20,30 +22,32 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { appearance, updateAppearance, effectsEnabled, toggleEffects } = useAppearance();
 
     const handleLogout = (e: React.FormEvent) => {
         e.preventDefault();
         router.post(logoutRoute);
     };
 
+    const themeOptions: { value: Appearance; icon: any; label: string }[] = [
+        { value: 'light', icon: Sun, label: 'Light' },
+        { value: 'dark', icon: Moon, label: 'Dark' },
+        { value: 'system', icon: Monitor, label: 'System' },
+    ];
+
     return (
-        <nav className="sticky top-0 z-[100] w-full bg-qb-blue h-14 flex items-center shadow-lg border-b border-white/10">
+        /* FONDO FIJO: Eliminamos dark:bg-qb-dark para mantener qb-blue siempre */
+        <nav className="sticky top-0 z-[100] w-full h-14 flex items-center shadow-lg border-b border-white/10 bg-qb-blue transition-none">
             <div className="w-full px-4 flex justify-between items-center h-full">
                 
+                {/* --- SECCIÓN IZQUIERDA: Logo Original y Links --- */}
                 <div className="flex items-center h-full">
-                    
                     <Link href="/" className="mr-6 group hover:scale-105 transition-transform duration-300 flex items-center gap-2">
                         <div className="w-9 h-9 relative flex items-center justify-center">
                             <div className="absolute inset-0 bg-transparent rounded-full shadow-[-2px_0_0_#D130F2,2px_0_0_#2FF4EE] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             
-                            <svg 
-                                viewBox="0 0 5796.8 5674.2" 
-                                className="w-full h-full stroke-qb-dark group-hover:stroke-white transition-colors duration-300 fill-none"
-                                strokeWidth="264.4"
-                                strokeLinecap="round"
-                                strokeMiterlimit="10"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
+                            {/* SVG Original: Mantenemos stroke-qb-dark fijo */}
+                            <svg viewBox="0 0 5796.8 5674.2" className="w-full h-full stroke-qb-dark group-hover:stroke-white transition-colors duration-300 fill-none" strokeWidth="264.4" strokeLinecap="round" strokeMiterlimit="10" xmlns="http://www.w3.org/2000/svg">
                                 <g>
                                     <path d="M2661,5125.9c-185.1-125.6-324.5-360.7-415.2-531.6c-230.7-435-351.5-900.4-348-1392.9 c0.4-62.7,2.7-125.4,6.7-188"/>
                                     <path d="M3953.9,3065.2c28.2,488-88.5,952.2-292.3,1394.8c-101.1,219.5-252.1,514.5-474.2,663"/>
@@ -79,13 +83,11 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                             Quantum Bug
                         </span>
                     </Link>
+
                     <div className="hidden md:flex items-center h-full">
                         {links.map((item, idx) => (
                             <div key={idx} className="flex items-center h-full">
-                                <Link 
-                                    href={item.link} 
-                                    className="px-4 text-[11px] font-black uppercase tracking-widest text-qb-dark hover:text-white transition-colors"
-                                >
+                                <Link href={item.link} className="px-4 text-[11px] font-black uppercase tracking-widest text-qb-dark hover:text-white transition-colors">
                                     {item.name}
                                 </Link>
                                 {idx < links.length - 1 && (
@@ -96,43 +98,61 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4 h-full">
+                {/* --- SECCIÓN DERECHA: Apariencia y Auth --- */}
+                <div className="flex items-center gap-3 h-full">
                     
-                    <div className="hidden sm:flex items-center bg-qb-dark/10 rounded px-3 py-1 border border-qb-dark/20 focus-within:border-white/50 transition-colors">
-                        <input 
-                            type="text" 
-                            className="bg-transparent border-none focus:ring-0 text-xs text-qb-dark placeholder-qb-dark/60 w-32 md:w-48 outline-none"
-                            placeholder="Search..."
-                        />
-                        <Search size={14} className="text-qb-dark" />
+                    {/* CONTROLES DE APARIENCIA (Fijos sobre azul) */}
+                    <div className="hidden sm:flex items-center bg-qb-dark/10 rounded-full p-1 border border-qb-dark/10 mr-1">
+                        {themeOptions.map((opt) => (
+                            <button
+                                key={opt.value}
+                                onClick={() => updateAppearance(opt.value)}
+                                className={cn(
+                                    "p-1.5 rounded-full transition-all",
+                                    appearance === opt.value 
+                                        ? "bg-qb-dark text-white shadow-sm" 
+                                        : "text-qb-dark/60 hover:text-qb-dark"
+                                )}
+                                title={opt.label}
+                            >
+                                <opt.icon size={13} strokeWidth={2.5} />
+                            </button>
+                        ))}
+                        <div className="w-[1px] h-3.5 bg-qb-dark/20 mx-1"></div>
+                        <button
+                            onClick={toggleEffects}
+                            className={cn(
+                                "p-1.5 rounded-full transition-all",
+                                effectsEnabled 
+                                    ? "text-qb-purple" 
+                                    : "text-qb-dark/40"
+                            )}
+                            title={effectsEnabled ? "Desactivar Glitch" : "Activar Glitch"}
+                        >
+                            {effectsEnabled ? <Zap size={13} fill="currentColor" strokeWidth={2.5} /> : <ZapOff size={13} strokeWidth={2.5} />}
+                        </button>
                     </div>
 
-                    <div className="flex items-center h-full ml-2">
+                    <div className="flex items-center h-full ml-1">
                         {user ? (
                             <div className="flex items-center gap-3 bg-qb-dark/10 px-4 py-1.5 rounded-full border border-qb-dark/20">
-                                <span className="text-[10px] font-bold text-qb-dark uppercase tracking-widest">
+                                <span className="text-[10px] font-bold text-qb-dark uppercase tracking-widest border-r border-qb-dark/30 pr-3">
                                     {user.name}
                                 </span>
-                                <button 
-                                    onClick={handleLogout} 
-                                    className="text-qb-dark hover:text-red-600 transition-colors"
-                                    title="Logout"
-                                >
-                                    <LogOut size={14} strokeWidth={3} />
+                                <Link href="/settings/profile" className="text-qb-dark hover:text-white transition-all" title="Settings">
+                                    <Settings size={14} strokeWidth={2.5} />
+                                </Link>
+                                <button onClick={handleLogout} className="text-qb-dark hover:text-red-600 transition-all ml-1" title="Logout">
+                                    <LogOut size={14} strokeWidth={2.5} />
                                 </button>
                             </div>
                         ) : (
                             <div className="flex items-center gap-2">
                                 {authLinks.map((item, idx) => (
-                                    <Link 
-                                        key={idx} 
-                                        href={item.link}
-                                        className={`text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded transition ${
-                                            idx === 1 
-                                            ? 'bg-qb-dark text-white hover:bg-qb-purple hover:shadow-[0_0_10px_rgba(209,48,242,0.5)]' 
-                                            : 'text-qb-dark hover:bg-qb-dark/10'
-                                        }`}
-                                    >
+                                    <Link key={idx} href={item.link} className={cn(
+                                        "text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded transition",
+                                        idx === 1 ? 'bg-qb-dark text-white hover:bg-qb-purple' : 'text-qb-dark hover:bg-qb-dark/10'
+                                    )}>
                                         {item.name}
                                     </Link>
                                 ))}
@@ -146,22 +166,41 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                 </div>
             </div>
 
+            {/* --- MENÚ MÓVIL (También qb-blue) --- */}
             {isOpen && (
                 <div className="absolute top-14 left-0 w-full bg-qb-blue border-b border-qb-dark/20 md:hidden flex flex-col p-4 animate-in slide-in-from-top-2 shadow-xl">
-                    <div className="flex items-center bg-qb-dark/10 rounded px-3 py-2 border border-qb-dark/20 mb-4">
-                        <input 
-                            type="text" 
-                            className="bg-transparent border-none focus:ring-0 text-xs text-qb-dark placeholder-qb-dark/60 w-full outline-none"
-                            placeholder="Search..."
-                        />
-                        <Search size={14} className="text-qb-dark" />
+                    <div className="flex items-center justify-around bg-qb-dark/10 rounded-lg p-3 mb-4">
+                        <div className="flex gap-4">
+                            {themeOptions.map((opt) => (
+                                <button key={opt.value} onClick={() => updateAppearance(opt.value)} className={cn("flex flex-col items-center gap-1", appearance === opt.value ? "text-qb-dark" : "text-qb-dark/40")}>
+                                    <opt.icon size={18} />
+                                    <span className="text-[8px] font-bold uppercase">{opt.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <div className="w-[1px] h-8 bg-qb-dark/20"></div>
+                        <button onClick={toggleEffects} className={cn("flex flex-col items-center gap-1", effectsEnabled ? "text-qb-purple" : "text-qb-dark/40")}>
+                            {effectsEnabled ? <Zap size={18} fill="currentColor" /> : <ZapOff size={18} />}
+                            <span className="text-[8px] font-bold uppercase">Glitch</span>
+                        </button>
                     </div>
 
                     {links.map((item, idx) => (
-                        <Link key={idx} href={item.link} className="py-3 text-xs font-black uppercase tracking-widest text-qb-dark border-b border-qb-dark/10 hover:pl-2 transition-all">
+                        <Link key={idx} href={item.link} className="py-3 text-xs font-black uppercase tracking-widest text-qb-dark border-b border-qb-dark/10">
                             {item.name}
                         </Link>
                     ))}
+
+                    {user && (
+                        <div className="mt-4 pt-4 border-t border-qb-dark/20 flex flex-col gap-2">
+                            <Link href="/settings/profile" className="flex items-center gap-3 py-3 text-xs font-black uppercase tracking-widest text-qb-dark">
+                                <Settings size={16} /> Account Settings
+                            </Link>
+                            <button onClick={handleLogout} className="flex items-center gap-3 py-3 text-xs font-black uppercase tracking-widest text-red-600 text-left">
+                                <LogOut size={16} /> Log Out
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </nav>

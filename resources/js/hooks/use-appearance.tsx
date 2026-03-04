@@ -7,14 +7,16 @@ export type UseAppearanceReturn = {
     readonly appearance: Appearance;
     readonly resolvedAppearance: ResolvedAppearance;
     readonly updateAppearance: (mode: Appearance) => void;
+    readonly effectsEnabled: boolean;
+    readonly toggleEffects: () => void;
 };
 
 const listeners = new Set<() => void>();
 let currentAppearance: Appearance = 'system';
+let currentEffectsEnabled: boolean = true;
 
 const prefersDark = (): boolean => {
     if (typeof window === 'undefined') return false;
-
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
@@ -26,26 +28,29 @@ const setCookie = (name: string, value: string, days = 365): void => {
 
 const getStoredAppearance = (): Appearance => {
     if (typeof window === 'undefined') return 'system';
-
     return (localStorage.getItem('appearance') as Appearance) || 'system';
+};
+
+const getStoredEffects = (): boolean => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem('effects-enabled') !== 'false';
 };
 
 const isDarkMode = (appearance: Appearance): boolean => {
     return appearance === 'dark' || (appearance === 'system' && prefersDark());
 };
 
-const applyTheme = (appearance: Appearance): void => {
+const applyTheme = (appearance: Appearance, effects: boolean): void => {
     if (typeof document === 'undefined') return;
 
     const isDark = isDarkMode(appearance);
-
     document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.classList.toggle('no-effects', !effects);
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 };
 
 const subscribe = (callback: () => void) => {
     listeners.add(callback);
-
     return () => listeners.delete(callback);
 };
 
@@ -53,11 +58,8 @@ const notify = (): void => listeners.forEach((listener) => listener());
 
 const mediaQuery = (): MediaQueryList | null => {
     if (typeof window === 'undefined') return null;
-
     return window.matchMedia('(prefers-color-scheme: dark)');
 };
-
-const handleSystemThemeChange = (): void => applyTheme(currentAppearance);
 
 export function initializeTheme(): void {
     if (typeof window === 'undefined') return;
@@ -68,10 +70,10 @@ export function initializeTheme(): void {
     }
 
     currentAppearance = getStoredAppearance();
-    applyTheme(currentAppearance);
+    currentEffectsEnabled = getStoredEffects();
+    applyTheme(currentAppearance, currentEffectsEnabled);
 
-    // Set up system theme change listener
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    mediaQuery()?.addEventListener('change', () => applyTheme(currentAppearance, currentEffectsEnabled));
 }
 
 export function useAppearance(): UseAppearanceReturn {
@@ -81,6 +83,12 @@ export function useAppearance(): UseAppearanceReturn {
         () => 'system',
     );
 
+    const effectsEnabled: boolean = useSyncExternalStore(
+        subscribe,
+        () => currentEffectsEnabled,
+        () => true,
+    );
+
     const resolvedAppearance: ResolvedAppearance = useMemo(
         () => (isDarkMode(appearance) ? 'dark' : 'light'),
         [appearance],
@@ -88,16 +96,18 @@ export function useAppearance(): UseAppearanceReturn {
 
     const updateAppearance = useCallback((mode: Appearance): void => {
         currentAppearance = mode;
-
-        // Store in localStorage for client-side persistence...
         localStorage.setItem('appearance', mode);
-
-        // Store in cookie for SSR...
         setCookie('appearance', mode);
-
-        applyTheme(mode);
+        applyTheme(mode, currentEffectsEnabled);
         notify();
     }, []);
 
-    return { appearance, resolvedAppearance, updateAppearance } as const;
+    const toggleEffects = useCallback((): void => {
+        currentEffectsEnabled = !currentEffectsEnabled;
+        localStorage.setItem('effects-enabled', String(currentEffectsEnabled));
+        applyTheme(currentAppearance, currentEffectsEnabled);
+        notify();
+    }, []);
+
+    return { appearance, resolvedAppearance, updateAppearance, effectsEnabled, toggleEffects } as const;
 }

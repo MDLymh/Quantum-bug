@@ -8,17 +8,17 @@ export default function Blogs() {
         
         <div className="mb-6">
           <h1 
-            className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest relative inline-block"
+            className="text-4xl md:text-6xl font-black text-black dark:text-white uppercase tracking-widest relative inline-block"
             style={{ textShadow: '3px 0px 0px #2FF4EE, -3px 0px 0px #D130F2' }}
           >
             Blogs
           </h1>
-          <p className="text-gray-400 mt-4 text-sm font-medium italic">
+          <p className="dark:text-gray-500 text-gray-800 mt-4 text-sm font-medium italic">
             Latest news, patch notes, and behind-the-scenes from our developers and artists.
           </p>
         </div>
 
-        <div className="text-gray-500 italic">
+        <div className="dark:text-gray-500 text-gray-800 italic">
           Blog posts coming soon...
         </div>
 
