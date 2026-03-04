@@ -1,7 +1,9 @@
 import Navbar from '@/components/custom/NavBar';
 import MainContainer from '@/components/custom/MainContainer';
 import AppLayoutTemplate from '@/layouts/app/app-nav-bar-layout';
-import { blogs, faq, home, login, logout, products, register, support } from '@/routes';
+import { blogs, faq, home, login, logout, register} from '@/routes';
+import products from '@/routes/products';
+import support from '@/routes/support';
 import type { AppLayoutProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 

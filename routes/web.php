@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\SupportController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -9,10 +12,13 @@ Route::get('/', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
-Route::inertia('products', 'products')->name('products');
+Route::controller(SupportController::class)->group(function(){
+    Route::get('support','index')->name('support.index');
+});
+Route::resource('reports',ReportsController::class);
+Route::resource('products',ProductController::class)->only(['index','show']);
 Route::inertia('faq', 'faq')->name('faq');
 Route::inertia('blogs', 'blogs')->name('blogs');
-Route::inertia('support', 'support')->name('support');
 
 
 require __DIR__.'/settings.php';
