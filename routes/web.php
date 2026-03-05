@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVersionController;
 use App\Http\Controllers\ReportsController;
@@ -29,7 +30,7 @@ Route::middleware(['auth','verified'])->group(function(){
 });
 Route::resource('products',ProductController::class)->only(['index','show']);
 Route::inertia('faq', 'faq')->name('faq');
-Route::inertia('blogs', 'blogs')->name('blogs');
+Route::resource('blogs',BlogsController::class)->only(['index','show']);
 
 
 require __DIR__.'/settings.php';

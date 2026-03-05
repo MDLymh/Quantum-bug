@@ -2,9 +2,10 @@ import Navbar from '@/components/custom/NavBar';
 import MainContainer from '@/components/custom/MainContainer';
 import Footer from '@/components/custom/Footer';
 import AppLayoutTemplate from '@/layouts/app/app-nav-bar-layout';
-import { blogs, faq, home, login, logout, register} from '@/routes';
+import {  faq, home, login, logout, register} from '@/routes';
 import products from '@/routes/products';
 import support from '@/routes/support';
+import blogs from '@/routes/blogs';
 import type { AppLayoutProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 
@@ -15,7 +16,7 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
         { name: 'Home', link: home.url() },
         { name: 'Products', link: products.index.url() },
         { name: 'Support', link: support.index.url() },
-        { name: 'Blogs', link: blogs.url() },
+        { name: 'Blogs', link: blogs.index().url },
         { name: 'FAQ', link: faq.url() }
     ];
 
