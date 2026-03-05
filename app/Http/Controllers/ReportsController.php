@@ -136,7 +136,7 @@ class ReportsController extends Controller
         $data = $request->validated();
         $user = auth()->user();
         $ticket = Ticket::find((int)$data['ticket_id']);
-        if(($ticket?->user_id == $user->id)){
+        if(!($ticket?->user_id == $user->id)){
             return redirect()->back()->withErrors(['An error has ocurred']);
         }
         $data['user_id']=$user->id;
