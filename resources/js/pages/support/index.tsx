@@ -30,7 +30,7 @@ function Index() {
               })}>Known Errors</a>
           </div>
         ))}
-        <a href={reports.index().url}>Create report</a>
+        <a href={reports.create().url}>Create report</a>
     </AppLayout>
   )
 }

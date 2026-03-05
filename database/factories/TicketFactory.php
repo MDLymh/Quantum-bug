@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +25,8 @@ class TicketFactory extends Factory
             "user_id" => User::inRandomOrder()->first()->id,
             "product_id"=> $product->id,
             "title"=> fake()->sentence(),
-            "description"=>fake()->paragraph()
+            "description"=>fake()->paragraph(),
+            "category_id"=>TicketCategory::inRandomOrder()->first()->id
         ];
     }
 }

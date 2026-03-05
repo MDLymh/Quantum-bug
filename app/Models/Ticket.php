@@ -9,6 +9,15 @@ class Ticket extends Model
 {
     /** @use HasFactory<\Database\Factories\TicketFactory> */
     use HasFactory;
+    protected $guarded = [];
+
+    public static function findByUser(int $user_id){
+        return self::where('user_id', $user_id)->get();
+    }
+
+    public function isOwnedBy(int $user_id) : bool {
+        return $this->user_id == $user_id;
+    }
 
     public function comments(){
         return $this->hasMany(TicketComment::class);
@@ -19,6 +28,6 @@ class Ticket extends Model
     }
 
     public function category(){
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(TicketCategory::class);
     }
 }

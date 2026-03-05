@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('product_version_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->string('title');
             $table->text('description');
             $table->enum('status', ['open', 'in_progress', 'closed'])->default('open');
