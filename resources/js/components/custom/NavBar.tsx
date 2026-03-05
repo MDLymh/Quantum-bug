@@ -36,17 +36,14 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
     ];
 
     return (
-        /* FONDO FIJO: Eliminamos dark:bg-qb-dark para mantener qb-blue siempre */
         <nav className="sticky top-0 z-[100] w-full h-14 flex items-center shadow-lg border-b border-white/10 bg-qb-blue transition-none">
             <div className="w-full px-4 flex justify-between items-center h-full">
                 
-                {/* --- SECCIÓN IZQUIERDA: Logo Original y Links --- */}
                 <div className="flex items-center h-full">
                     <Link href="/" className="mr-6 group hover:scale-105 transition-transform duration-300 flex items-center gap-2">
                         <div className="w-9 h-9 relative flex items-center justify-center">
                             <div className="absolute inset-0 bg-transparent rounded-full shadow-[-2px_0_0_#D130F2,2px_0_0_#2FF4EE] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             
-                            {/* SVG Original: Mantenemos stroke-qb-dark fijo */}
                             <svg viewBox="0 0 5796.8 5674.2" className="w-full h-full stroke-qb-dark group-hover:stroke-white transition-colors duration-300 fill-none" strokeWidth="264.4" strokeLinecap="round" strokeMiterlimit="10" xmlns="http://www.w3.org/2000/svg">
                                 <g>
                                     <path d="M2661,5125.9c-185.1-125.6-324.5-360.7-415.2-531.6c-230.7-435-351.5-900.4-348-1392.9 c0.4-62.7,2.7-125.4,6.7-188"/>
@@ -98,10 +95,8 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                     </div>
                 </div>
 
-                {/* --- SECCIÓN DERECHA: Apariencia y Auth --- */}
                 <div className="flex items-center gap-3 h-full">
                     
-                    {/* CONTROLES DE APARIENCIA (Fijos sobre azul) */}
                     <div className="hidden sm:flex items-center bg-qb-dark/10 rounded-full p-1 border border-qb-dark/10 mr-1">
                         {themeOptions.map((opt) => (
                             <button
@@ -166,7 +161,6 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                 </div>
             </div>
 
-            {/* --- MENÚ MÓVIL (También qb-blue) --- */}
             {isOpen && (
                 <div className="absolute top-14 left-0 w-full bg-qb-blue border-b border-qb-dark/20 md:hidden flex flex-col p-4 animate-in slide-in-from-top-2 shadow-xl">
                     <div className="flex items-center justify-around bg-qb-dark/10 rounded-lg p-3 mb-4">

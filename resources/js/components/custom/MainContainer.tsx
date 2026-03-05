@@ -12,8 +12,6 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
                             bg-white dark:bg-qb-gray 
                             border-x border-gray-300 dark:border-white/5">
                 
-                {/* --- Decoraciones Laterales (Identidad Quantum) --- */}
-                {/* Lado Izquierdo - Clase glitch-decor añadida */}
                 <div className="glitch-decor absolute top-0 bottom-0 -left-1 sm:-left-2 w-1 sm:w-2 flex flex-col pointer-events-none z-0">
                     <div className="h-1/6 w-full bg-qb-purple"></div>
                     <div className="h-8 w-full bg-qb-cyan animate-glitch-fast -translate-x-1 sm:-translate-x-2"></div>
@@ -24,7 +22,6 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
                     <div className="h-1/5 w-full bg-qb-purple"></div>
                 </div>
 
-                {/* Lado Derecho - Clase glitch-decor añadida */}
                 <div className="glitch-decor absolute top-0 bottom-0 -right-1 sm:-right-2 w-1 sm:w-2 flex flex-col pointer-events-none z-0">
                     <div className="h-1/5 w-full bg-qb-cyan"></div>
                     <div className="h-16 w-full bg-qb-purple animate-glitch-fast translate-x-1 sm:translate-x-2"></div>
@@ -34,7 +31,6 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
                     <div className="h-1/4 w-full bg-qb-purple animate-pulse"></div>
                 </div>
 
-                {/* Detalles flotantes - Clase glitch-decor añadida */}
                 <div className="glitch-decor absolute top-16 -left-6 w-12 h-1 bg-qb-cyan animate-glitch-slow z-0 hidden sm:block"></div>
                 <div className="glitch-decor absolute bottom-40 -right-8 w-16 h-1.5 bg-qb-blue z-0 hidden sm:block"></div>
                 <div className="glitch-decor absolute top-1/2 -left-3 w-6 h-1 bg-qb-purple animate-glitch-fast z-0"></div>
