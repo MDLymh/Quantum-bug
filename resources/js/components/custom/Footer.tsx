@@ -58,7 +58,7 @@ export default function Footer() {
                         <Link href="/" className="hover:text-white hover:scale-105 transition-all">Home</Link>
                         <Link href="/products" className="hover:text-white hover:scale-105 transition-all">Products</Link>
                         <Link href="/support" className="hover:text-white hover:scale-105 transition-all">Support</Link>
-                        <Link href="/faq" className="hover:text-white hover:scale-105 transition-all">FAQ</Link>
+                        {/* <Link href="/faq" className="hover:text-white hover:scale-105 transition-all">FAQ</Link> */}
                         <Link href="/blogs" className="hover:text-white hover:scale-105 transition-all">Blogs</Link>
                     </div>
                 </div>

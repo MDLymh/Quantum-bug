@@ -16,15 +16,12 @@ import reports from '@/routes/reports';
 export default function CreateReport() {
     const { categories, products } = usePage().props as unknown as { categories: selectOption[], products: selectOption[] };
     
-
     const [productId, setProductId] = useState("");
     const [versions, setVersions] = useState<selectOption[]>([]);
     const [loadingVersions, setLoadingVersions] = useState(false);
 
-
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [images, setImages] = useState<File[]>([]);
-
 
     useEffect(() => {
         if (productId) {
@@ -37,7 +34,6 @@ export default function CreateReport() {
             setVersions([]);
         }
     }, [productId]);
-
 
     const syncFileInput = (files: File[]) => {
         if (fileInputRef.current) {
@@ -72,43 +68,58 @@ export default function CreateReport() {
         disabled: isDropzoneDisabled, 
     });
 
-    const baseInputClasses = "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+    // 1. ESTILOS DE INPUTS: Aplanados, sin bordes redondeados y fondo sutil oscuro para integrarse al layout
+    const baseInputClasses = "flex w-full rounded-none border border-gray-300 dark:border-white/10 bg-transparent dark:bg-[#1a1a1e] px-4 py-3 text-sm text-gray-900 dark:text-white ring-offset-background placeholder:text-gray-400 dark:placeholder:text-gray-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-qb-cyan focus-visible:border-qb-cyan disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-300";
+
+    // 2. ESTILOS DE LABELS: Apegados a la identidad visual de la imagen
+    const labelClasses = "text-[10px] font-black uppercase tracking-widest text-gray-800 dark:text-gray-300 mb-1";
 
     return (
         <AppLayout>
             <Head title="Create Report" />
             
-            <div className="max-w-2xl mx-auto p-6 bg-background rounded-lg shadow-sm border mt-6">
-                <h1 className="text-2xl font-bold mb-6">Create Report</h1>
+            {/* ELIMINAMOS LA "TARJETA": Ahora el contenido fluye directo en el layout principal */}
+            <div className="w-full max-w-5xl mx-auto pt-6 pb-16 transition-colors duration-300">
+                
+                {/* HEADER DE LA SECCIÓN */}
+                <div className="relative mb-10 border-b border-gray-200 dark:border-white/10 pb-8 pt-6">
+                    {/* Barra superior de colores que respeta el modo glitch */}
+                    <div className="glitch-decor absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-qb-blue via-qb-cyan to-qb-purple"></div>
+                    
+                    <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter glitch-title mt-2">
+                        Create Report
+                    </h1>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-3">
+                        Submit a new bug or support ticket
+                    </p>
+                </div>
 
                 <Form
-                
-                
                     action={reports.store().url}
                     method="post"
                     disableWhileProcessing
-                    className="flex flex-col gap-6"
+                    className="flex flex-col gap-8"
                 >
                     {({ processing, errors }) => (
-                        <div className="grid gap-6">
+                        <div className="grid gap-8">
                             
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="category_id">Category *</Label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="flex flex-col">
+                                    <Label htmlFor="category_id" className={labelClasses}>Category *</Label>
                                     <select 
                                         id="category_id"
                                         name="category_id"
                                         required
                                         className={baseInputClasses} 
                                     >
-                                        <option value="">Select Category</option>
-                                        {categories.map(cat => <option key={cat.value.toString()} value={cat.value.toString()}>{cat.name}</option>)}
+                                        <option value="" className="dark:bg-[#1a1a1e]">Select Category</option>
+                                        {categories.map(cat => <option key={cat.value.toString()} value={cat.value.toString()} className="dark:bg-[#1a1a1e]">{cat.name}</option>)}
                                     </select>
-                                    <InputError message={errors.category_id} />
+                                    <InputError message={errors.category_id} className="mt-2" />
                                 </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="product_id">Product *</Label>
+                                <div className="flex flex-col">
+                                    <Label htmlFor="product_id" className={labelClasses}>Product *</Label>
                                     <select 
                                         id="product_id"
                                         name="product_id"
@@ -117,58 +128,61 @@ export default function CreateReport() {
                                         value={productId}
                                         onChange={e => setProductId(e.target.value)}
                                     >
-                                        <option value="">Select Product</option>
-                                        {products.map(prod => <option key={prod.value.toString()} value={prod.value.toString()}>{prod.name}</option>)}
+                                        <option value="" className="dark:bg-[#1a1a1e]">Select Product</option>
+                                        {products.map(prod => <option key={prod.value.toString()} value={prod.value.toString()} className="dark:bg-[#1a1a1e]">{prod.name}</option>)}
                                     </select>
-                                    <InputError message={errors.product_id} />
+                                    <InputError message={errors.product_id} className="mt-2" />
                                 </div>
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="version_id">Version (Optional)</Label>
+                            <div className="flex flex-col">
+                                <Label htmlFor="version_id" className={labelClasses}>Version (Optional)</Label>
                                 <select 
                                     id="version_id"
                                     name="version_id"
                                     className={baseInputClasses} 
                                     disabled={loadingVersions || versions.length === 0}
                                 >
-                                    <option value="">{loadingVersions ? "Loading..." : "Select Version"}</option>
-                                    {versions.map(v => <option key={v.value.toString()} value={v.value.toString()}>{v.name}</option>)}
+                                    <option value="" className="dark:bg-[#1a1a1e]">{loadingVersions ? "Loading..." : "Select Version"}</option>
+                                    {versions.map(v => <option key={v.value.toString()} value={v.value.toString()} className="dark:bg-[#1a1a1e]">{v.name}</option>)}
                                 </select>
-                                <InputError message={errors.version_id} />
+                                <InputError message={errors.version_id} className="mt-2" />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="title">Title *</Label>
+                            <div className="flex flex-col">
+                                <Label htmlFor="title" className={labelClasses}>Title *</Label>
                                 <Input 
                                     id="title"
                                     type="text"
                                     name="title"
                                     required
-                                    placeholder="Report title"
+                                    placeholder="Report title..."
+                                    className={baseInputClasses}
                                 />
-                                <InputError message={errors.title} />
+                                <InputError message={errors.title} className="mt-2" />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="description">Description *</Label>
+                            <div className="flex flex-col">
+                                <Label htmlFor="description" className={labelClasses}>Description *</Label>
                                 <textarea 
                                     id="description"
                                     name="description"
                                     required
                                     maxLength={500}
-                                    className={`${baseInputClasses} min-h-[8rem] resize-none`} 
-                                    placeholder="Detailed description..."
+                                    className={`${baseInputClasses} min-h-[10rem] resize-none`} 
+                                    placeholder="Detailed description of the issue..."
                                 />
-                                <InputError message={errors.description} />
+                                <InputError message={errors.description} className="mt-2" />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label>Images (Optional, max 3)</Label>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex justify-between items-end mb-1">
+                                    <Label className={labelClasses}>Attachments</Label>
+                                    <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+                                        {images.length} / 3 Max (2MB)
+                                    </span>
+                                </div>
                                 
-                                {/* INPUT NATIVO OCULTO: 
-                                    Aquí es donde la magia ocurre. Inertia leerá automáticamente
-                                    "images[]" y lo enviará junto al resto del formulario. */}
                                 <input 
                                     type="file" 
                                     name="images[]" 
@@ -177,27 +191,26 @@ export default function CreateReport() {
                                     className="hidden" 
                                 />
 
-                                <div {...getRootProps()} className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors 
-                                    ${isDropzoneDisabled ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60 dark:border-gray-800 dark:bg-gray-800' : 
-                                    isDragActive ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 cursor-pointer' : 
-                                    'border-gray-300 dark:border-gray-700 hover:border-blue-400 cursor-pointer'}`}>
+                                <div {...getRootProps()} className={`border border-dashed rounded-none p-10 text-center transition-all duration-300 
+                                    ${isDropzoneDisabled ? 'border-gray-200 bg-gray-50 dark:border-white/5 dark:bg-white/5 cursor-not-allowed opacity-60' : 
+                                    isDragActive ? 'border-qb-cyan bg-qb-cyan/5 text-qb-cyan cursor-pointer scale-[1.01]' : 
+                                    'border-gray-300 dark:border-white/10 hover:border-qb-blue dark:hover:border-qb-cyan cursor-pointer dark:bg-[#1a1a1e] text-gray-500 dark:text-gray-400 hover:text-qb-blue dark:hover:text-qb-cyan'}`}>
                                     
-                                    {/* Evitamos que el Dropzone cree su propio input descontrolado pasándole los props vacíos y dependiendo solo del visual */}
                                     <input {...getInputProps()} />
                                     
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-xs font-bold uppercase tracking-widest">
                                         {isDropzoneDisabled 
-                                            ? "Límite de 3 imágenes alcanzado" 
-                                            : "Arrastra hasta 3 imágenes o haz clic aquí"}
+                                            ? "Maximum limit of 3 images reached" 
+                                            : "Drag & drop images here, or click to browse"}
                                     </p>
                                 </div>
 
                                 {images.length > 0 && (
-                                    <div className="mt-2 flex flex-col gap-2">
+                                    <div className="mt-4 flex flex-col gap-2">
                                         {images.map((file, idx) => (
-                                            <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded-md border text-sm">
-                                                <span className="truncate max-w-[80%]">{file.name}</span>
-                                                <button type="button" onClick={() => removeImage(idx)} className="text-destructive font-bold px-3 hover:opacity-80 transition-opacity">✕</button>
+                                            <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-none text-sm group transition-colors hover:border-gray-300 dark:hover:border-white/20">
+                                                <span className="truncate max-w-[80%] text-gray-700 dark:text-gray-300 font-medium text-xs">{file.name}</span>
+                                                <button type="button" onClick={() => removeImage(idx)} className="text-gray-400 hover:text-red-500 font-bold px-3 transition-colors">✕</button>
                                             </div>
                                         ))}
                                     </div>
@@ -208,11 +221,13 @@ export default function CreateReport() {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
+                                className="mt-6 w-full h-14 rounded-none font-black uppercase tracking-widest text-xs transition-all duration-300
+                                           bg-qb-dark text-white hover:bg-qb-blue 
+                                           dark:bg-qb-cyan dark:text-qb-dark dark:hover:bg-white dark:hover:shadow-[0_0_15px_rgba(47,244,238,0.5)]"
                                 disabled={processing}
                             >
-                                {processing && <Spinner className="mr-2" />}
-                                Submit Report
+                                {processing && <Spinner className="mr-3" />}
+                                {processing ? "Transmitting..." : "Submit Report"}
                             </Button>
                         </div>
                     )}

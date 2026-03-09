@@ -6,7 +6,7 @@ interface MainContainerProps {
 
 const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
     return (
-        <div className="w-full flex justify-center px-4 md:px-12 transition-colors duration-500 bg-gray-200 dark:bg-qb-dark min-h-[calc(100vh-3.5rem)]">
+        <div className="w-full flex justify-center px-4 md:px-12 transition-colors duration-500 bg-transparent min-h-[calc(100vh-3.5rem)]">
             
             <div className="relative w-full max-w-5xl transition-all duration-500 flex flex-col shadow-2xl
                             bg-white dark:bg-qb-gray 

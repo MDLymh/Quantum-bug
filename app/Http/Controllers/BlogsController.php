@@ -52,8 +52,8 @@ class BlogsController extends Controller
             abort(404);
         }
 
-        $path = storage_path('app\\private\\blogs\\'.$blog->file_name.'.md');
-        // $path = storage_path('app\\private\\blogs\\019cbf58-23d5-7306-b86e-033d6cd443ef.md');
+        //$path = storage_path('app\\private\\blogs\\'.$blog->file_name.'.md');
+        $path = storage_path('app\\private\\blogs\\019cbf58-23d5-7306-b86e-033d6cd443ef.md');
         if(!file_exists($path)){
             abort(404);
         }

@@ -34,11 +34,9 @@ function Faq() {
     <AppLayout>
       <div className="w-full max-w-4xl mx-auto py-10 px-4">
         
-        {/* --- Header Section (Anaglyph Glitch Effect) --- */}
         <div className="text-center mb-16">
           <h1 
             className="text-4xl md:text-6xl font-black text-black dark:text-white uppercase tracking-widest relative inline-block"
-            // The textShadow trick creates the cyan/magenta separation seen in your title reference.
             style={{ textShadow: '3px 0px 0px #2FF4EE, -3px 0px 0px #D130F2' }}
           >
             Frequently Asked Questions
@@ -48,17 +46,14 @@ function Faq() {
           </p>
         </div>
 
-        {/* --- FAQ List (shaden/ui Accordion) --- */}
         <Accordion type="single" collapsible className="w-full space-y-2">
           {faqData.map((item, index) => (
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              // Thin, semi-transparent divider line between items
               className="border-b border-white/10"
             >
               <AccordionTrigger 
-                // [&>svg]:hidden is crucial to hide the default shadcn chevron arrow
                 className="text-left text-lg md:text-xl font-bold dark:text-gray-300 text-gray-800 hover:text-gray-600 dark:hover:text-white hover:no-underline py-6 [&>svg]:hidden group"
               >
                 <span className="flex-grow">{item.question}</span>
@@ -79,7 +74,6 @@ function Faq() {
           ))}
         </Accordion>
 
-        {/* --- Help Section at Bottom (Translated) --- */}
         <div className="mt-20 pt-10 border-t border-white/5 dark:border-white/10 text-center">
             <p className="text-qb-blue font-black uppercase tracking-widest text-xs mb-2">Still need help?</p>
             <p className="dark:text-gray-500 text-gray-800 text-sm mb-6 italic">If you can't find your answer here, feel free to contact our technical support team.</p>

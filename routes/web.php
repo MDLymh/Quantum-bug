@@ -29,7 +29,11 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::resource('reports',ReportsController::class)->except(['edit','update','destroy']);
 });
 Route::resource('products',ProductController::class)->only(['index','show']);
-Route::inertia('faq', 'faq')->name('faq');
+//To do: switch to faq when implemented
+Route::get('faq', function () {
+    abort(403);
+    return Inertia::render('faq'); 
+})->name('faq');
 Route::resource('blogs',BlogsController::class)->only(['index','show']);
 
 

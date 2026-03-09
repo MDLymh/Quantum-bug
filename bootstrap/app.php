@@ -6,6 +6,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
+// ¡Eliminamos el 'use Throwable;' de aquí!
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,5 +27,22 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        
+        $exceptions->respond(function (Response $response, \Throwable $exception, Request $request) {
+            
+            if (in_array($response->getStatusCode(), [403, 404])) {
+                
+                $message = $response->getStatusCode() === 404 
+                    ? 'The requested sector does not exist or has been deleted.' 
+                    : 'Access Denied. You do not have clearance for this sector.';
+
+                return Inertia::render('Errors/Restricted', [
+                    'status' => $response->getStatusCode(),
+                    'message' => $message
+                ])->toResponse($request)->setStatusCode($response->getStatusCode());
+            }
+
+            return $response;
+        });
+        
     })->create();
