@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TicketComment extends Model
 {
     /** @use HasFactory<\Database\Factories\TicketCommentFactory> */
+    protected $guarded = [];
     use HasFactory;
     public function ticket()
     {

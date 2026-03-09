@@ -9,7 +9,7 @@ class EvidenceOfTicket extends Model
 {
     /** @use HasFactory<\Database\Factories\EvidenceOfTicketFactory> */
     use HasFactory;
-
+    protected $guarded = [];
     public function ticket(){
         return $this->belongsTo(Ticket::class);
     }
