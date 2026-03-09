@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
     ];
 
     return (
-        <nav className="sticky top-0 z-[100] w-full h-14 flex items-center shadow-lg border-b border-white/10 bg-qb-blue transition-none">
+        <nav className="sticky top-0 z-100 w-full h-14 flex items-center shadow-lg border-b border-white/10 bg-qb-blue transition-none">
             <div className="w-full px-4 flex justify-between items-center h-full">
                 
                 <div className="flex items-center h-full">
@@ -88,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                                     {item.name}
                                 </Link>
                                 {idx < links.length - 1 && (
-                                    <div className="h-6 w-[1px] bg-qb-dark/30"></div>
+                                    <div className="h-6 w-px bg-qb-dark/30"></div>
                                 )}
                             </div>
                         ))}
@@ -113,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                                 <opt.icon size={13} strokeWidth={2.5} />
                             </button>
                         ))}
-                        <div className="w-[1px] h-3.5 bg-qb-dark/20 mx-1"></div>
+                        <div className="w-px h-3.5 bg-qb-dark/20 mx-1"></div>
                         <button
                             onClick={toggleEffects}
                             className={cn(
@@ -172,7 +172,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                                 </button>
                             ))}
                         </div>
-                        <div className="w-[1px] h-8 bg-qb-dark/20"></div>
+                        <div className="w-px h-8 bg-qb-dark/20"></div>
                         <button onClick={toggleEffects} className={cn("flex flex-col items-center gap-1", effectsEnabled ? "text-qb-purple" : "text-qb-dark/40")}>
                             {effectsEnabled ? <Zap size={18} fill="currentColor" /> : <ZapOff size={18} />}
                             <span className="text-[8px] font-bold uppercase">Glitch</span>
