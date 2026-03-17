@@ -13,6 +13,7 @@ use Laravel\Fortify\Features;
 Route::get('/', function () {
     return Inertia::render('home', [
         'canRegister' => Features::enabled(Features::registration()),
+        'products' => Product::with('category')->latest()->take(6)->get(),
     ]);
 })->name('home');
 Route::controller(SupportController::class)->group(function(){

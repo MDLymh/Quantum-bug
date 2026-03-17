@@ -76,16 +76,14 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
     ];
 
     return (
-        <nav className="sticky top-0 z-[100] w-full h-14 flex items-center shadow-lg border-b border-white/10 bg-qb-blue transition-none mb-4">
+        <nav className="sticky top-0 z-100 w-full h-14 flex items-center shadow-lg border-b border-white/10 bg-qb-blue transition-none">
             <div className="w-full px-4 flex justify-between items-center h-full">
                 
-                {/* --- SECCIÓN IZQUIERDA --- */}
                 <div className="flex items-center h-full">
                     <Link href="/" className="mr-6 group hover:scale-105 transition-transform duration-300 flex items-center gap-2">
                         <div className="w-9 h-9 relative flex items-center justify-center">
                             <div className="absolute inset-0 bg-transparent rounded-full shadow-[-2px_0_0_#D130F2,2px_0_0_#2FF4EE] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <svg viewBox="0 0 5796.8 5674.2" className="w-full h-full stroke-qb-dark group-hover:stroke-white transition-colors duration-300 fill-none" strokeWidth="264.4" strokeLinecap="round" strokeMiterlimit="10" xmlns="http://www.w3.org/2000/svg">
-                                {/* SVG paths omitidos por brevedad, usa tu SVG exacto aquí si lo copias parcial */}
                                 <g>
                                     <path d="M2661,5125.9c-185.1-125.6-324.5-360.7-415.2-531.6c-230.7-435-351.5-900.4-348-1392.9 c0.4-62.7,2.7-125.4,6.7-188"/>
                                     <path d="M3953.9,3065.2c28.2,488-88.5,952.2-292.3,1394.8c-101.1,219.5-252.1,514.5-474.2,663"/>
@@ -120,10 +118,8 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                     </div>
                 </div>
 
-                {/* --- SECCIÓN DERECHA --- */}
                 <div className="flex items-center gap-3 h-full">
                     
-                    {/* Botones de Tema y Glitch */}
                     <div className="hidden sm:flex items-center bg-qb-dark/10 rounded-full p-1 border border-qb-dark/10 mr-1">
                         {themeOptions.map((opt) => (
                             <button
@@ -151,11 +147,9 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                         </button>
                     </div>
 
-                    {/* --- MENÚ DE USUARIO DESPLEGABLE --- */}
                     <div className="hidden md:flex items-center h-full ml-1">
                         {user ? (
                             <div className="relative flex items-center h-full" ref={dropdownRef}>
-                                {/* TRIGGER: SOLO EL AVATAR */}
                                 <button 
                                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                                     className={cn(
@@ -171,10 +165,8 @@ const Navbar: React.FC<NavbarProps> = ({ links, authLinks, logoutRoute, user }) 
                                     {user.name.charAt(0).toUpperCase()}
                                 </button>
 
-                                {/* DROPDOWN MENU CON ANIMACIÓN FLUIDA */}
                                 <div className={cn(
-                                    "absolute top-14 right-0 w-60 bg-white dark:bg-[#1a1a1e] border border-gray-200 dark:border-white/10 shadow-2xl rounded-none flex flex-col py-2 z-[200]",
-                                    // La clave de la animación: origin en la esquina superior derecha y un ease personalizado
+                                    "absolute top-14 right-0 w-60 bg-white dark:bg-[#1a1a1e] border border-gray-200 dark:border-white/10 shadow-2xl rounded-none flex flex-col py-2 z-200",
                                     "transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform origin-top-right",
                                     isUserMenuOpen 
                                         ? "opacity-100 translate-y-0 scale-100 pointer-events-auto" 

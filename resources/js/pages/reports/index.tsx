@@ -8,8 +8,6 @@ import { Terminal, ArrowRight, CircleDashed, CheckCircle2, Clock, AlertCircle } 
 
 export default function Index() {
     const { reports: reportList } = usePage().props as unknown as { reports: SimplifiedReport[] };
-
-    // Helper para darle colores e iconos a los estados del reporte
     const getStatusConfig = (status: string) => {
         const normalized = status.toLowerCase();
         switch (normalized) {
@@ -45,10 +43,8 @@ export default function Index() {
             <Head title="Report Tracking" />
             
             <div className="w-full max-w-5xl mx-auto pt-8 pb-20 px-4 md:px-0 transition-colors duration-300">
-                
-                {/* --- HEADER DE LA SECCIÓN --- */}
                 <div className="relative mb-10 border-b border-gray-200 dark:border-white/10 pb-8 pt-4">
-                    <div className="glitch-decor absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-qb-blue via-qb-cyan to-qb-purple"></div>
+                    <div className="glitch-decor absolute top-0 left-0 w-full h-1 bg-linear-to-r from-qb-blue via-qb-cyan to-qb-purple"></div>
                     
                     <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter glitch-title mt-4">
                         Reports

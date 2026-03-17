@@ -34,7 +34,7 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
                 <div className="block dark:hidden absolute inset-0 z-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-size-[40px_40px] pointer-events-none"></div>
                 <div className="hidden dark:block absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(47,244,238,0.03)_0%,transparent_60%)] pointer-events-none"></div>
 
-                <header className="sticky top-0 z-100 w-full bg-white/80 dark:bg-qb-dark/95 backdrop-blur-md transition-colors duration-500 border-b border-gray-200 dark:border-white/10">
+                <header className="sticky top-0 z-100 w-full mb-4 bg-white/80 dark:bg-qb-dark/95 backdrop-blur-md transition-colors duration-500 border-b border-gray-200 dark:border-white/10">
                     <Navbar 
                         links={links} 
                         authLinks={authLinks} 

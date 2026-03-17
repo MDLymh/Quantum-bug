@@ -16,7 +16,7 @@ export default function Restricted({ status = 403, message = "Hey, you're not su
             
             <div className="w-full flex items-center justify-center min-h-[70vh] px-4 py-12 transition-colors duration-300">
                 <div className="w-full max-w-2xl mx-auto flex flex-col items-center text-center p-8 md:p-12 relative overflow-hidden transition-colors duration-300">
-                    <div className="glitch-decor absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-qb-blue via-qb-cyan to-qb-purple"></div>
+                    <div className="glitch-decor absolute top-0 left-0 w-full h-1 bg-linear-to-r from-qb-blue via-qb-cyan to-qb-purple"></div>
                     <div className="absolute left-2 top-1/4 w-1 h-16 bg-qb-cyan animate-glitch-fast hidden md:block z-0"></div>
                     <div className="absolute right-2 bottom-1/4 w-1 h-12 bg-qb-purple animate-glitch-slow hidden md:block z-0"></div>
                     <div className="relative mb-10 group z-10">
